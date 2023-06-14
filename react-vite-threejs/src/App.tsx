@@ -1,33 +1,16 @@
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useLoader } from "@react-three/fiber";
 // import AnimatedBox from "./components/three/AnimatedBox";
 // import CameraOrbitController from "./components/three/CameraOrbitController";
 import "./App.css";
-import { OrbitControls, Stats, Torus, useTexture } from "@react-three/drei";
-import TexturedSpheres from "./components/three/TexturedSpheres";
-
-const TexturedSphere = () => {
-  const metalMap = useTexture("./textures/metal.webp");
-  const metalNormal = useTexture("./textures/metal_normal.jpg");
-  const metalRoughness = useTexture("./textures/metal_roughness.jpg");
-  return (
-    <>
-      <mesh scale={[0.5, 0.5, 0.5]} position={[0, 1, 0]}>
-        {/* 원뿔의 geometry */}
-        <sphereGeometry />
-        {/* roughness로 좀더 현실세계같은 질감처리를 할 수 있다. */}
-        <meshStandardMaterial
-          map={metalMap}
-          normalMap={metalNormal}
-          roughnessMap={metalRoughness}
-        />
-      </mesh>
-    </>
-  );
-};
+import { OrbitControls, Stats, useFBX, useTexture } from "@react-three/drei";
+import Lights from "./components/three/Lights";
+import Ground from "./components/three/Ground";
+import Trees from "./components/three/Trees";
 
 function App() {
   // test모드면 axe축과, fps모니터링 띄워주도록
   const testing = true;
+
   return (
     <div className="container">
       <p className="header">
@@ -38,7 +21,7 @@ function App() {
        Canvas에 camera프로퍼티로 fov , near, aspect, far 설정 가능. (카메라 시야)
        orthographic : 직교(카메라)
        */}
-      <Canvas style={{ height: 600 }} camera={{ fov: 40 }}>
+      <Canvas style={{ height: 600 }} camera={{ fov: 40 }} shadows>
         {/* threejs의 OrbitController를 drei라이브러리의 추상화된 컴포넌트로 대채가능*/}
         {/* <CameraOrbitController /> */}
 
@@ -49,21 +32,16 @@ function App() {
         {testing ? <gridHelper args={[10]} /> : null}
 
         <OrbitControls />
-
+        {/* <primitive object={sampleFBX2} scale={0.05} /> */}
+        {/* <Tree /> */}
         {/* Light주기 */}
         {/* <ambientLight intensity={0.3} /> */}
         {/* light 색상 */}
-        {/* <directionalLight color={"#333333"} position={[0, 5, 5]} /> */}
+        <directionalLight color={"#333333"} position={[0, 5, 5]} />
         {/* <AnimatedBox isTesting={testing} /> */}
-
-        <ambientLight />
-        <mesh rotation-x={Math.PI * -0.5}>
-          <planeBufferGeometry args={[5, 5]} />
-          <meshStandardMaterial color={"#458745"} />
-        </mesh>
-
-        <TexturedSphere />
-        {/* <Torus /> */}
+        <Lights />
+        <Ground />
+        <Trees boundary={50} count={20} />
       </Canvas>
     </div>
   );
