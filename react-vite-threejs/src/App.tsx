@@ -2,7 +2,7 @@ import { Canvas, useLoader } from "@react-three/fiber";
 // import AnimatedBox from "./components/three/AnimatedBox";
 // import CameraOrbitController from "./components/three/CameraOrbitController";
 import "./App.css";
-import { OrbitControls, Stats, useFBX, useTexture } from "@react-three/drei";
+import { OrbitControls, Stats } from "@react-three/drei";
 import Lights from "./components/three/Lights";
 import Ground from "./components/three/Ground";
 import Trees from "./components/three/Trees";
@@ -32,16 +32,12 @@ function App() {
         {testing ? <gridHelper args={[10]} /> : null}
 
         <OrbitControls />
-        {/* <primitive object={sampleFBX2} scale={0.05} /> */}
-        {/* <Tree /> */}
-        {/* Light주기 */}
-        {/* <ambientLight intensity={0.3} /> */}
         {/* light 색상 */}
         <directionalLight color={"#333333"} position={[0, 5, 5]} />
         {/* <AnimatedBox isTesting={testing} /> */}
         <Lights />
         <Ground />
-        <Trees boundary={50} count={20} />
+        <Trees boundary={10} count={20} />
       </Canvas>
     </div>
   );
