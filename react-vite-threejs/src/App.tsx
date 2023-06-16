@@ -1,15 +1,40 @@
-import { Canvas, useLoader } from "@react-three/fiber";
-// import AnimatedBox from "./components/three/AnimatedBox";
-// import CameraOrbitController from "./components/three/CameraOrbitController";
+import { Canvas } from "@react-three/fiber";
+
 import "./App.css";
-import { OrbitControls, Stats } from "@react-three/drei";
+import { OrbitControls, Stats, useAnimations, useFBX } from "@react-three/drei";
 import Lights from "./components/three/Lights";
 import Ground from "./components/three/Ground";
 import Trees from "./components/three/Trees";
+import { useEffect } from "react";
+
+const SwipeCube = () => {
+  const model = useFBX("/swipe_cube.fbx");
+  const { actions } = useAnimations(model.animations, model);
+
+  useEffect(() => {
+    console.log("actions:", actions);
+    actions["Cube|swipe"]?.play();
+  }, []);
+
+  return <primitive object={model} scale={0.01} />;
+};
+
+const IronMan = () => {
+  const fbx = useFBX("/ironman_player.fbx");
+  const { actions } = useAnimations(fbx.animations, fbx);
+
+  useEffect(() => {
+    console.log("ironman actions", actions);
+  }, []);
+
+  return <primitive object={fbx} scale={0.04} />;
+};
 
 function App() {
   // test모드면 axe축과, fps모니터링 띄워주도록
   const testing = true;
+  const hulkbuster = useFBX("/hulkbuster.fbx");
+  const mark3 = useFBX("/mark3.fbx");
 
   return (
     <div className="container">
@@ -21,7 +46,7 @@ function App() {
        Canvas에 camera프로퍼티로 fov , near, aspect, far 설정 가능. (카메라 시야)
        orthographic : 직교(카메라)
        */}
-      <Canvas style={{ height: 600 }} camera={{ fov: 40 }} shadows>
+      <Canvas style={{ height: 800 }} camera={{ fov: 40 }} shadows>
         {/* threejs의 OrbitController를 drei라이브러리의 추상화된 컴포넌트로 대채가능*/}
         {/* <CameraOrbitController /> */}
 
@@ -31,13 +56,17 @@ function App() {
         {testing ? <axesHelper visible={true} args={[2]} /> : null}
         {testing ? <gridHelper args={[10]} /> : null}
 
+        <SwipeCube />
+        <primitive object={hulkbuster} scale={0.1} position={[0, 1, 0]} />
+        <primitive object={mark3} scale={0.02} position={[4, 1, 0]} />
+        <IronMan />
+
         <OrbitControls />
         {/* light 색상 */}
         <directionalLight color={"#333333"} position={[0, 5, 5]} />
-        {/* <AnimatedBox isTesting={testing} /> */}
         <Lights />
         <Ground />
-        <Trees boundary={10} count={20} />
+        <Trees boundary={100} count={20} />
       </Canvas>
     </div>
   );
