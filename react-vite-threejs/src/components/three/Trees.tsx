@@ -44,7 +44,7 @@ const Trees: React.FC<Props> = ({ boundary, count }) => {
 
   // 나무들이 겹치는 지 계산식
   const isOverLapping = (index: number, tree: any, trees: any[]) => {
-    console.log("tree position", tree.position);
+    // console.log("tree position", tree.position);
     const minTargetX = (tree.position.x - tree.box) / 2;
     const maxTargetX = (tree.position.x + tree.box) / 2;
     const minTargetZ = (tree.position.z - tree.box) / 2;
@@ -108,7 +108,7 @@ const Trees: React.FC<Props> = ({ boundary, count }) => {
     <group rotation={[0, 4, 0]}>
       {trees.map((tree, index) => (
         <object3D key={index} position={[tree.position.x, 0, tree.position.z]}>
-          <primitive object={model.clone()} scale={0.006} />
+          <primitive object={model.clone()} scale={0.01} />
           <mesh scale={[tree.box, tree.box, tree.box]}>
             <boxGeometry />
             <meshBasicMaterial color={"blue"} wireframe />
